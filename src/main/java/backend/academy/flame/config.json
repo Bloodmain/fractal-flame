@@ -1,0 +1,19 @@
+{
+    "threads": 16,
+    "variations": [
+        {
+            "name": "Heart",
+            "weight": 0.8
+        },
+        {
+            "name": "Hyperbolic",
+            "weight": 0.2
+        }
+    ],
+    "colors": [
+        "#ebf2fa"
+    ],
+    "symmetry": 2,
+    "samplesNum": 1000000,
+    "output": "RESULT.png"
+}
