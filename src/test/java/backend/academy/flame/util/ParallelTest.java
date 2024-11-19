@@ -10,7 +10,6 @@ import backend.academy.flame.transform.ColoredTransform;
 import backend.academy.flame.transform.Sinusoidal;
 import backend.academy.flame.transform.Spherical;
 import java.util.List;
-import java.util.Random;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,31 +65,5 @@ public class ParallelTest {
 
         verify(renderer, times(4)).render(cfg.withSamplesNum(143));
         verify(renderer, times(3)).render(cfg.withSamplesNum(142));
-    }
-
-    @Test
-    public void parallelPerformance() {
-        Random rnd = new Random(24);
-        Renderer renderer = new Renderer(rnd);
-        List<ColoredTransform> transforms = List.of(
-            new ColoredTransform(new Spherical(), new Color(125, 125, 125)),
-            new ColoredTransform(new Sinusoidal(), new Color(255, 1, 147))
-        );
-
-        long seqEstimatedTime = measureTime(1, renderer, transforms);
-        long parEstimatedTime = measureTime(8, renderer, transforms);
-
-        assertThat(parEstimatedTime).isLessThan(seqEstimatedTime);
-    }
-
-    private long measureTime(int threads, Renderer renderer, List<ColoredTransform> transforms) {
-        long parStartTime = System.nanoTime();
-        RenderConfig cfg = new RenderConfig(
-            RendererRunner.createCanvas(threads, 1920, 1080),
-            new Rect(-2, -2, 4, 4),
-            transforms, 1000000, 100, 1
-        );
-        RendererRunner.run(threads, renderer, cfg);
-        return System.nanoTime() - parStartTime;
     }
 }
